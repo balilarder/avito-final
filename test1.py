@@ -3,7 +3,9 @@ import numpy as np
 import os
 import lightgbm as lgb
 import csv
-
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 # get submission ids: dic
 cols = ['item_id', 'deal_probability']
 df = pd.read_csv('sample_submission.csv', names = cols)
@@ -93,3 +95,7 @@ with open('save.csv', 'w') as f:
     for i, (a, b) in enumerate(zip(df2['item_id'], y_pred)):
         wf.writerow([a, b])
 # ridge regression
+f, ax = plt.subplots(figsize=[7,10])
+lgb.plot_importance(gbm, max_num_features=50, ax=ax)
+plt.title("Light GBM Feature Importance")
+plt.savefig('feature_import.png')
